@@ -1,11 +1,13 @@
 import express from "express";
-import { MONGODBURL, PORT } from "./config.js";
+// import { MONGODBURL, PORT } from "./config.js";
 import mongoose from "mongoose";
 import { Book } from "./models/bookModel.js";
 import bookRoute from './routes/bookRoutes.js'
 // import path, { join } from 'path'
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import dotenv from 'dotenv';
+dotenv.config();
 
 import cors from 'cors'
 const app = express();
@@ -21,9 +23,9 @@ app.use(express.json());
 app.use('/books',bookRoute)
 app.use(express.static(join(__dirname,'build')))
 mongoose
-  .connect(MONGODBURL)
+  .connect(process.env.MONGODBURL)
   .then(() => {
     console.log("app connected to database");
-    app.listen(PORT, () => console.log(`server litening of port ${PORT}`));
+    app.listen(process.env.PORT, () => console.log(`server litening of port ${process.env.PORT}`));
   })
   .catch((error) => console.log(error));
